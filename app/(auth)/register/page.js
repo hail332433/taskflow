@@ -49,6 +49,8 @@ export default function RegisterPage() {
         setError('Conta criada, mas erro ao fazer login')
         setLoading(false)
       } else {
+        // Wait a moment for session to be established
+        await new Promise(resolve => setTimeout(resolve, 500))
         router.push('/dashboard')
         router.refresh()
       }

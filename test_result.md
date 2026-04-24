@@ -293,7 +293,7 @@ frontend:
     implemented: true
     working: false
     file: "/app/app/(dashboard)/dashboard/page.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -306,6 +306,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CONFIRMED: Default workspace creation still broken after corrections. Registration works perfectly (user created successfully), login works, dashboard loads with correct welcome message 'Bem-vindo, Task User!', but no workspace is created automatically. Manual workspace creation UI works but has modal overlay issues preventing completion. This blocks the entire user workflow."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ROOT CAUSE IDENTIFIED: NextAuth session management is unstable. Backend workspace creation works perfectly (tested via API - creates user + workspace successfully). Frontend registration and auto-login work initially. However, session gets lost after short time, causing 401 'Não autenticado' errors on /api/workspaces calls. Users get logged out intermittently. Session API returns empty data {}. This breaks entire user workflow as users cannot access their workspaces due to session loss."
 
   - task: "Página de Workspace"
     implemented: true
@@ -413,3 +416,5 @@ agent_communication:
     message: "Correções aplicadas: 1) Sidebar navigation corrigida (removido link /workspaces que não existia), 2) Logout function corrigida com signOut({ redirect: false }), 3) Links para /calendar e /analytics mantidos. Testar novamente o sistema completo."
   - agent: "testing"
     message: "✅ PARTIAL SUCCESS AFTER CORRECTIONS: 1) ✅ NAVIGATION FIXED - Sidebar navigation to Calendar and Analytics now working correctly, 2) ✅ LOGOUT FIXED - Logout functionality working properly with correct redirect, 3) ✅ AUTHENTICATION WORKING - Registration, login, and session management all working correctly, 4) ✅ CALENDAR & ANALYTICS PAGES - Both pages load correctly with full functionality (KPIs, charts, calendar interface), 5) ❌ CRITICAL REMAINING ISSUE: Default workspace creation still broken - no workspace created automatically during registration, blocking full user workflow. Manual workspace creation has modal overlay issues. This is the only remaining critical blocker."
+  - agent: "testing"
+    message: "🔍 FINAL SYSTEM TEST COMPLETED - ROOT CAUSE IDENTIFIED: ❌ CRITICAL NextAuth SESSION MANAGEMENT ISSUE: Backend workspace creation works perfectly (API test confirmed user + workspace creation successful). Frontend registration and auto-login work initially. However, NextAuth session becomes unstable and gets lost after short time, causing 401 'Não autenticado' errors on protected API calls like /api/workspaces. Session API returns empty data {}. Users get logged out intermittently, breaking entire workflow. EVIDENCE: 1) Direct API test: POST /api/register creates user + workspace successfully, 2) Login works initially, 3) Session API returns 200 but empty {}, 4) Workspace API returns 401 due to lost session, 5) Users redirected to login page. PRIORITY: Fix NextAuth session persistence configuration."

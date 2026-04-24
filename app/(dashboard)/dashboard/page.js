@@ -27,10 +27,19 @@ export default function DashboardPage() {
   const fetchWorkspaces = async () => {
     try {
       const response = await fetch('/api/workspaces')
+      if (!response.ok) {
+        console.error('Error response:', response.status, response.statusText)
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Error data:', errorData)
+        setWorkspaces([])
+        return
+      }
       const data = await response.json()
-      setWorkspaces(data)
+      console.log('Workspaces loaded:', data)
+      setWorkspaces(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Error fetching workspaces:', error)
+      setWorkspaces([])
     } finally {
       setLoading(false)
     }

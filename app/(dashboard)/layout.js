@@ -12,13 +12,18 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 function DashboardNav({ user }) {
   const pathname = usePathname()
+  const router = useRouter()
   
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/workspaces', icon: FolderKanban, label: 'Workspaces' },
     { href: '/calendar', icon: Calendar, label: 'Calendário' },
     { href: '/analytics', icon: BarChart3, label: 'Análises' }
   ]
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+    router.push('/login')
+  }
 
   const NavContent = () => (
     <>
@@ -67,7 +72,7 @@ function DashboardNav({ user }) {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signOut({ callbackUrl: '/login' })}
+            onClick={handleLogout}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Sair
@@ -107,7 +112,7 @@ function DashboardNav({ user }) {
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => signOut({ callbackUrl: '/login' })}
+                  onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Sair

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]/route'
 import connectDB from '@/lib/mongodb'
 import User from '@/lib/models/User'
 import Workspace from '@/lib/models/Workspace'
@@ -23,9 +24,9 @@ function handleCORS(response) {
 }
 
 // Helper to get session
-async function getSession(request) {
+async function getSession() {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     return session
   } catch (error) {
     console.error('Session error:', error)
@@ -189,7 +190,7 @@ async function handleRoute(request, { params }) {
     }
 
     // ============ PROTECTED ROUTES ============
-    const session = await getSession(request)
+    const session = await getSession()
     if (!session?.user) {
       return handleCORS(NextResponse.json(
         { error: 'Não autenticado' },

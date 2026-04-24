@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import connectDB from '@/lib/mongodb'
 import User from '@/lib/models/User'
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -47,6 +47,9 @@ const handler = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60 // 30 days
   },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60 // 30 days
+  },
   pages: {
     signIn: '/login',
     error: '/login'
@@ -56,18 +59,25 @@ const handler = NextAuth({
       if (user) {
         token.id = user.id
         token.role = user.role
+        token.email = user.email
+        token.name = user.name
       }
       return token
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (token && session.user) {
         session.user.id = token.id
         session.user.role = token.role
+        session.user.email = token.email
+        session.user.name = token.name
       }
       return session
     }
   },
-  secret: process.env.NEXTAUTH_SECRET
-})
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: false
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

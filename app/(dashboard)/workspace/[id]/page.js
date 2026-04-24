@@ -118,7 +118,11 @@ export default function WorkspacePage() {
               Novo Projeto
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[525px]" onInteractOutside={(e) => e.preventDefault()}>
+          <DialogContent 
+            className="sm:max-w-[525px]" 
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
             <DialogHeader>
               <DialogTitle>Criar Novo Projeto</DialogTitle>
               <DialogDescription>

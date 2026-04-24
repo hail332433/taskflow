@@ -118,7 +118,7 @@ export default function WorkspacePage() {
               Novo Projeto
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[525px]" onInteractOutside={(e) => e.preventDefault()}>
             <DialogHeader>
               <DialogTitle>Criar Novo Projeto</DialogTitle>
               <DialogDescription>
@@ -133,6 +133,7 @@ export default function WorkspacePage() {
                   placeholder="Meu Projeto"
                   value={newProject.name}
                   onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
+                  onKeyDown={(e) => e.key === 'Enter' && createProject()}
                 />
               </div>
               <div className="space-y-2">
@@ -147,10 +148,10 @@ export default function WorkspacePage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setDialogOpen(false)} type="button">
                 Cancelar
               </Button>
-              <Button onClick={createProject} disabled={creating || !newProject.name.trim()}>
+              <Button onClick={createProject} disabled={creating || !newProject.name.trim()} type="button">
                 {creating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -90,7 +90,7 @@ export default function DashboardPage() {
               Novo Workspace
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[425px]" onInteractOutside={(e) => e.preventDefault()}>
             <DialogHeader>
               <DialogTitle>Criar Novo Workspace</DialogTitle>
               <DialogDescription>
@@ -110,10 +110,10 @@ export default function DashboardPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setDialogOpen(false)} type="button">
                 Cancelar
               </Button>
-              <Button onClick={createWorkspace} disabled={creating || !newWorkspaceName.trim()}>
+              <Button onClick={createWorkspace} disabled={creating || !newWorkspaceName.trim()} type="button">
                 {creating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
